@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Ventas, Detalles
 from .forms import VentaForm, DetalleVentaForm
 
+# Create your views here.
+
 def registro_ventas(request):
     ventas = Ventas.objects.all()
     if request.method == "POST":
@@ -30,4 +32,4 @@ def detalle_venta(request, venta_id):
         form = DetalleVentaForm()
     return render(request, 'ventas/detalle_venta.html', {'venta': venta, 'detalles': detalles, 'form': form})
 
-# Create your views here.
+

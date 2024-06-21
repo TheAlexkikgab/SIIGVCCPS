@@ -19,10 +19,13 @@ from django.urls import path, include
 from productos import views as productos_views
 from clientes import views as clientes_views
 from ventas import views as ventas_views
+from home import views as home_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('productos/', productos_views.mostrar_html),
+    path('', home_views.home, name='home'),
+    path('login/', home_views.login, name='login'),
     #path('clientes/', clientes_views.),
     #path('ventas/', ventas_views.),
 ]
