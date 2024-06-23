@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Ventas, Detalles
+from .models import Venta, Detalle
 from .forms import VentaForm, DetalleVentaForm
 
 # Create your views here.
 
 def registro_ventas(request):
-    ventas = Ventas.objects.all()
+    ventas = Venta.objects.all()
     if request.method == "POST":
         form = VentaForm(request.POST)
         if form.is_valid():
@@ -16,8 +16,8 @@ def registro_ventas(request):
     return render(request, 'ventas/registro_ventas.html', {'ventas': ventas, 'form': form})
 
 def detalle_venta(request, venta_id):
-    venta = Ventas.objects.get(id=venta_id)
-    detalles = Detalles.objects.filter(id_venta=venta)
+    venta = Venta.objects.get(id=venta_id)
+    detalles = Detalle.objects.filter(id_venta=venta)
     if request.method == "POST":
         form = DetalleVentaForm(request.POST)
         if form.is_valid():

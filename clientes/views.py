@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from .models import Clientes
+from .models import Cliente
 from .forms import ClienteForm
 
 def gestion_clientes(request):
-    clientes = Clientes.objects.all()
+    clientes = Cliente.objects.all()
     if request.method == "POST":
         form = ClienteForm(request.POST)
         if form.is_valid():
