@@ -12,5 +12,9 @@ class Cliente(models.Model):
     telefono = models.CharField(max_length=20)
     email = models.EmailField(max_length=255, unique=True)  # Correo electrónico único
 
-    def _str_(self):
-        return f"{self.nombres} {self.apellidos}"
+    class Meta:
+        ordering = ['cedula'] #Ordenar Alfabéticamente según la cédula (ascendentemente)
+
+    def __str__(self):
+        texto = "{0} {1} CI - {2}"
+        return texto.format(self.nombres, self.apellidos, self.cedula)
