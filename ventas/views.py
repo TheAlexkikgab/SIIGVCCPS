@@ -1,35 +1,40 @@
-from django.shortcuts import render, redirect
-from .models import Venta, Detalle
-from .forms import VentaForm, DetalleVentaForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Cliente
+from .forms import ClienteForm, CedulaForm
+from ventas.models import Venta  
 
-# Create your views here.
-
-def registro_ventas(request):
-    ventas = Venta.objects.all()
-    if request.method == "POST":
-        form = VentaForm(request.POST)
+def verificar_cedula(request):
+    if request.method == 'POST':
+        form = CedulaForm(request.POST)
         if form.is_valid():
-            venta = form.save()
-            return redirect('detalle_venta', venta_id=venta.id)
+            cedula = form.cleaned_data['cedula']
+            try:
+                cliente = Cliente.objects.get(cedula=cedula)
+                # Redirigir al carrito (debes ajustar esta URL según tus URLs)
+                return redirect('carrito', cliente_id=cliente.id)
+            except Cliente.DoesNotExist:
+                return redirect('registrar_cliente', cedula=cedula)
     else:
-        form = VentaForm()
-    return render(request, 'ventas/registro_ventas.html', {'ventas': ventas, 'form': form})
+        form = CedulaForm()
+    return render(request, 'clientes/verificar_cedula.html', {'form': form})
 
-def detalle_venta(request, venta_id):
-    venta = Venta.objects.get(id=venta_id)
-    detalles = Detalle.objects.filter(id_venta=venta)
-    if request.method == "POST":
-        form = DetalleVentaForm(request.POST)
+def registrar_cliente(request, cedula=None):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
         if form.is_valid():
-            detalle = form.save(commit=False)
-            detalle.id_venta = venta
-            detalle.subtotal = detalle.cantidad * detalle.precio_unitario
-            detalle.save()
-            venta.total += detalle.subtotal
-            venta.save()
-            return redirect('detalle_venta', venta_id=venta.id)
+            form.save()
+            return redirect('carrito', cliente_id=form.instance.id)
     else:
-        form = DetalleVentaForm()
-    return render(request, 'ventas/detalle_venta.html', {'venta': venta, 'detalles': detalles, 'form': form})
+        form = ClienteForm(initial={'cedula': cedula})
+    return render(request, 'clientes/registrar_cliente.html', {'form': form})
 
-
+def gestion_clientes(request):
+    clientes = Cliente.objects.all()
+    if request.method == "POST":
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('gestion_clientes')
+    else:
+        form = ClienteForm()
+    return render(request, 'clientes/gestion_clientes.html', {'clientes': clientes, 'form': form})

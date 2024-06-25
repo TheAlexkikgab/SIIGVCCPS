@@ -1,6 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1> Home </h1>
-<p> {% lorem 1 b random %} </p>
+<!-- Logo de la empresa -->
+<div class="container text-center mt-4">
+    <img src="{% static 'logo.png' %}" alt="MercaMoya C.A." class="img-fluid" style="max-height: 100px;">
+</div>
+<!-- Contenido Home -->
+<div class="">
+        <div class="container d-flex justify-content-center align-items-center vh-100">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Nuevo Cliente</h5>
+                            <a href="{% url 'verificar_cedula' %}" class="btn btn-primary btn-lg">Registrar Nuevo Cliente</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Verificar Cliente</h5>
+                            <form action="{% url 'verificar_cedula' %}" method="get">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Ingrese la cédula" aria-label="Cédula" name="cedula" required>
+                                    <button class="btn btn-secondary btn-lg" type="submit">Verificar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 {% endblock  %}

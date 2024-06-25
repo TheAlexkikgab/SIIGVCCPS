@@ -6,5 +6,5 @@ from django.contrib.auth import login
 def home(request):
     return render(request, 'home.html')
 
-def login(request):
-    return render(request, 'login.html')
+# def login(request):
+#     return render(request, 'login.html')S
