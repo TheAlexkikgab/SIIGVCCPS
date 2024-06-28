@@ -1,12 +1,11 @@
 from django import forms
-from .models import Venta, Detalle
+from .models import Venta, Detalle, ItemCarrito, Producto
 
 class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
-        fields = ['cliente', 'metodo_pago', 'estatus_venta', 'descuento', 'impuestos']
+        fields = ['metodo_pago', 'estatus_venta', 'descuento', 'impuestos']
         widgets = {
-            'cliente': forms.Select(attrs={'class': 'form-control'}),
             'metodo_pago': forms.TextInput(attrs={'class': 'form-control'}),
             'estatus_venta': forms.TextInput(attrs={'class': 'form-control'}),
             'descuento': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -22,3 +21,16 @@ class DetalleVentaForm(forms.ModelForm):
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
             'precio_unitario': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+class ItemCarritoForm(forms.ModelForm):
+    class Meta:
+        model = ItemCarrito
+        fields = ['producto', 'cantidad']
+        widgets = {
+            'producto': forms.Select(attrs={'class': 'form-control', 'id': 'id_producto'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_cantidad'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['producto'].queryset = Producto.objects.all().values_list('nombre', flat=True)

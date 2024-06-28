@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Ver Carrito</h2>
+<ul>
+    {% for item in items %}
+    <li>Producto: {{ item.producto.nombre }} - Cantidad: {{ item.cantidad }} - Subtotal: {{ item.subtotal }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Agregar Producto al Carrito</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ item_form.as_p }}
+    <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#id_producto').change(function() {
+        var productoId = $(this).val();
+        if (productoId) {
+            $.ajax({
+                url: '{% url "obtener_producto" 0 %}'.replace('0', productoId),
+                method: 'GET',
+                success: function(data) {
+                    $('#id_precio_unitario').val(data.precio_unitario);
+                    $('#id_cantidad').attr('max', data.stock_disponible);
+                }
+            });
+        } else {
+            $('#id_precio_unitario').val('');
+            $('#id_cantidad').attr('max', '');
+        }
+    });
+});
+</script>
+
+{% endblock %}
