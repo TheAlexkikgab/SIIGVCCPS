@@ -7,31 +7,36 @@
 </div>
 <!-- Contenido Home -->
 <div class="">
-        <div class="container d-flex justify-content-center align-items-center">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Nuevo Cliente</h5>
-                            <a href="{% url 'registrar_cliente' %}" class="btn btn-primary btn-lg">Registrar Nuevo Cliente</a>
-                        </div>
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Nuevo Cliente</h5>
+                        <a href="{% url 'registrar_cliente' %}" class="btn btn-primary btn-lg">Registrar Nuevo Cliente</a>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">Verificar Cliente</h5>
-                            <form action="{% url 'verificar_cedula' %}" method="POST">
-                                {% csrf_token %} <!-- Token de validación, NO ELIMINAR -->
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Ingrese la cédula" aria-label="Cédula" name="cedula" required>
-                                    <button class="btn btn-secondary btn-lg" type="submit">Verificar</button>
-                                </div>
-                            </form>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Verificar Cliente</h5>
+                        <form action="{% url 'verificar_cedula' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Ingrese la cédula" aria-label="Cédula" name="cedula" required>
+                                <button class="btn btn-secondary btn-lg" type="submit">Verificar</button>
+                            </div>
+                        </form>
+                        {% if error_message %}
+                        <div class="alert alert-danger mt-3" role="alert">
+                            {{ error_message }}
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 {% endblock %}

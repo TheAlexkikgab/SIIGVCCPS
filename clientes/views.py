@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cliente
 from .forms import ClienteForm, CedulaForm
-#from ventas.views import 
 
 def verificar_cedula(request):
     if request.method == 'POST':
@@ -10,13 +9,13 @@ def verificar_cedula(request):
             cedula = form.cleaned_data['cedula']
             try:
                 cliente = Cliente.objects.get(cedula=cedula)
-                # Redirigir al carrito (ajustar esta URL)
                 return redirect('ver_carrito', cliente_id=cliente.id)
             except Cliente.DoesNotExist:
-                return redirect('registrar_cliente', cedula=cedula)
+                return render(request, 'home.html', {'form': form, 'error_message': 'Cédula de Cliente no encontrada, por favor regístrese.'})
     else:
         form = CedulaForm()
-    return render(request, 'verificar_cedula.html', {'form': form})
+    return render(request, 'home.html', {'form': form})
+
 
 def registrar_cliente(request):
     if request.method == 'POST':
