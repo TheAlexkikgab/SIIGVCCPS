@@ -1,18 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Ver Carrito</h2>
-<ul>
-    {% for item in items %}
-    <li>Producto: {{ item.producto.nombre }} - Cantidad: {{ item.cantidad }} - Subtotal: {{ item.subtotal }}</li>
-    {% endfor %}
-</ul>
+<div class="container mt-5 mb-5 pt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>Ver Carrito</h2>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>{{ item.subtotal }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-<h3>Agregar Producto al Carrito</h3>
-<form method="post">
-    {% csrf_token %}
-    {{ item_form.as_p }}
-    <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
-</form>
+            <form method="post">
+                {% csrf_token %}
+                {{ item_form.as_p }}
+                <a href="{% url 'agregar_producto_carrito' carrito.id %}" class="btn btn-primary">Agregar Producto</a>
+                <a href="{% url 'confirmar_venta' %}" class="btn btn-success">Confirmar Venta</a>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -35,5 +56,4 @@ $(document).ready(function() {
     });
 });
 </script>
-
 {% endblock %}

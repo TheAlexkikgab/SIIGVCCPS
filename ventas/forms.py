@@ -33,4 +33,4 @@ class ItemCarritoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['producto'].queryset = Producto.objects.all().values_list('nombre', flat=True)
+        self.fields['producto'].queryset = Producto.objects.all()  # Asegúrate de que aquí estás obteniendo los productos correctos
