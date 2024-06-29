@@ -2,8 +2,12 @@
 {% block content %}
 <div class="container mt-5 mb-5 pt-5">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h2>Ver Carrito</h2>
+            <form method="post" action="{% url 'eliminar_carrito' carrito.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar Carrito</button>
+            </form>
         </div>
         <div class="card-body">
             <table class="table">
@@ -12,6 +16,7 @@
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Subtotal</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,17 +25,34 @@
                         <td>{{ item.producto.nombre }}</td>
                         <td>{{ item.cantidad }}</td>
                         <td>{{ item.subtotal }}</td>
+                        <td>
+                            <form method="post" action="{% url 'eliminar_producto_carrito' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2">Total</th>
+                        <th>{{ total }}</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
 
-            <form method="post">
-                {% csrf_token %}
-                {{ item_form.as_p }}
-                <a href="{% url 'agregar_producto_carrito' carrito.id %}" class="btn btn-primary">Agregar Producto</a>
-                <a href="{% url 'confirmar_venta' %}" class="btn btn-success">Confirmar Venta</a>
-            </form>
+            {% if messages %}
+            <div class="alert alert-info">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <a href="{% url 'agregar_producto_carrito' carrito.id %}" class="btn btn-primary">Agregar Producto</a>
+            <a href="{% url 'confirmar_venta' carrito.cliente.id %}" class="btn btn-success">Confirmar Venta</a>
         </div>
     </div>
 </div>

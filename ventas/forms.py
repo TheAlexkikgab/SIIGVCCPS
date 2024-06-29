@@ -7,7 +7,6 @@ class VentaForm(forms.ModelForm):
         fields = ['metodo_pago', 'estatus_venta', 'descuento', 'impuestos']
         widgets = {
             'metodo_pago': forms.TextInput(attrs={'class': 'form-control'}),
-            'estatus_venta': forms.TextInput(attrs={'class': 'form-control'}),
             'descuento': forms.NumberInput(attrs={'class': 'form-control'}),
             'impuestos': forms.NumberInput(attrs={'class': 'form-control'}),
         }
