@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5 mb-5 pt-5">
+    <div class="card pt-5">
+        <div class="card-header">
+            <h2>Venta Confirmada</h2>
+        </div>
+        <div class="card-body">
+            <p class="alert alert-success">La venta ha sido confirmada exitosamente.</p>
+
+            <h3>Detalles de la Venta</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>{{ item.subtotal }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2">Total</th>
+                        <th>{{ total }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <a href="{% url 'ver_carrito' carrito.cliente.id %}" class="btn btn-primary">Volver al Carrito</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

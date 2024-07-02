@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>Agregar Producto al Carrito</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ item_form.as_p }}
+                <button type="submit" class="btn btn-primary mt-3">Agregar al Carrito</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#id_producto').change(function() {
+        var productoId = $(this).val();
+        if (productoId) {
+            $.ajax({
+                url: '{% url "obtener_producto" 0 %}'.replace('0', productoId),
+                method: 'GET',
+                success: function(data) {
+                    $('#id_precio_unitario').val(data.precio_unitario);
+                    $('#id_cantidad').attr('max', data.stock_disponible);
+                }
+            });
+        } else {
+            $('#id_precio_unitario').val('');
+            $('#id_cantidad').attr('max', '');
+        }
+    });
+});
+</script>
+{% endblock %}
